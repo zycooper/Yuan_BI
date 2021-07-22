@@ -1,0 +1,183 @@
+<div class="app-body">
+  <app-report-selection [Reports]="this.Reports" (Report)="setReport($event)"></app-report-selection>
+  <main class="main">  
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb ">
+        <span class="badge badge-danger" style="font-size: 95%;" [hidden] = "this.SelectedReport != null">No Report Select Yet</span>
+        <li class="breadcrumb-item active" aria-current="page" [hidden] = "this.SelectedReport == null">
+          <span class="cui-chevron-right icons"></span>
+          <span class="badge badge-primary" style="font-size: 95%;">Report: <span class="badge badge-light badge-pill" style="position: static;">{{this.SelectedReport}}</span></span>
+          <span class="badge badge-primary" style="font-size: 95%;">X Col: <span class="badge badge-light badge-pill" style="position: static;">{{this.SelectedXaxisCol}}</span></span>
+          <span class="badge badge-primary" style="font-size: 95%;">Y Col: <span class="badge badge-light badge-pill" style="position: static;">{{this.SelectedYaxisCols}}</span></span>
+          <span class="badge badge-secondary" style="font-size: 95%;">Total Row: <span class="badge badge-light badge-pill" style="position: static;">{{this.SelectedTtlRowPos}}</span></span>
+          <span class="badge badge-secondary" style="font-size: 95%;">Total Col: <span class="badge badge-light badge-pill" style="position: static;">{{this.SelectedTtlColPos}}</span></span>
+          <span class="badge badge-secondary" style="font-size: 95%;">Y Sort: <span class="badge badge-light badge-pill" style="position: static;">{{this.YaxisSort}}</span></span>
+          <span class="badge badge-secondary" style="font-size: 95%;">X Sort: <span class="badge badge-light badge-pill" style="position: static;">{{this.XaxisSort}}</span></span>
+          <span class="badge badge-light" style="font-size: 95%;">Word Wrap: <span class="badge badge-light badge-pill" style="position: static;">{{this.WrapText}}</span></span>
+        </li>
+      </ol>
+    </nav>
+    <div class="container-fluid" style="overflow: auto;" [ngStyle] = "{'white-space':(this.WrapText ==='False')?'nowrap':''}">
+     
+      <!-- Demo table  -->
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="card" style="width: fit-content; min-width: -webkit-fill-available;">
+            <div class="card-header">
+              <i class="fa fa-align-justify"></i> {{this.SelectedReport}}
+            </div>
+            <div class="card-body">
+              <h1 [hidden] = "this.SelectedReport != null"><i class="fa fa-arrow-left fa-lg mt-4" style="margin-right: 1%;"></i> Please select report from the left nav bar</h1>          
+              <table class="table table-striped table-sm">     
+                <tr *ngFor = "let row of this.PivotData; let i = index">
+                  <td class ="td-aging" 
+                      *ngFor = "let col of row; let j = index" 
+                      (click) = "openDetailModal(content,i,j)">
+                    <span *ngIf="i !== 0 && j >= this.SelectedYaxisCols.length && this.PivotData[i][j] !== '-'" style="cursor: pointer;">{{col}}</span>
+                    <span *ngIf="i === 0 || j < this.SelectedYaxisCols.length || this.PivotData[i][j] === '-'" style="cursor: not-allowed;">{{col}}</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <!--/.col-->
+      </div>
+
+    
+    </div>
+  </main>
+  <app-aside [fixed]="true" [display]="false">
+    <tabset [ngStyle]="{'display':(this.FullData && this.FullData.length > 0) ? '' : 'none' }">
+      <tab>
+        <ng-template tabHeading><i class="icon-list"></i></ng-template>
+         <div class="list-group list-group-accent">
+          <div class="list-group-item list-group-item-accent-primary bg-light text-center font-weight-bold text-muted text-uppercase small">Column Select</div>     
+          <app-column-selection 
+            [columns] = "this.RestColumns" 
+            [X_axis_cols] = "this.XaxisColsForComponent" 
+            [Y_axis_cols] = "this.YaxisColsForComponent" 
+            (applyColEvent) = "setColumns($event)">
+          </app-column-selection>
+        </div>
+      </tab>
+      <tab>
+        <ng-template tabHeading><i class="icon-settings"></i></ng-template>     
+        <div class="list-group list-group-accent">
+          <div class="list-group-item list-group-item-accent-primary bg-light text-center font-weight-bold text-muted text-uppercase small">Report Settings</div>
+          <div class="col-md-12">
+            <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+              <div class="card-header card-header-setting ">Pivot Function</div>
+              <div class="card-body" style="padding: 1%;">
+                <div class="btn-group btn-block" dropdown>
+                  <button dropdownToggle type="button" id="btn_pivot_func" class="btn btn-outline-primary dropdown-toggle">
+                    Pivot Function<span class="caret"></span>
+                  </button>
+                  <ul *dropdownMenu class="dropdown-menu" role="menu">
+                    <li role="menuitem">
+                      <a class="dropdown-item" 
+                      *ngFor="let PivotFunc of PivotFunArr"
+                      (click)= "setPivotFunc(PivotFunc)">{{PivotFunc}}</a>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="btn-group btn-block" dropdown>
+                  <button dropdownToggle type="button" id="btn_pivot_func_col" class="btn btn-outline-primary dropdown-toggle">
+                    Pivot Column<span class="caret"></span>
+                  </button>
+                  <ul *dropdownMenu class="dropdown-menu" role="menu">
+                    <li role="menuitem">
+                      <a class="dropdown-item" 
+                      *ngFor="let Col of FillColArr"
+                      (click)= "setPivotFuncCol(Col)">{{Col}}</a>
+                    </li>                  
+                  </ul>
+                </div>
+                <button class="btn btn-outline-primary btn-block">Apply</button>
+              </div>
+            </div>
+
+            <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+              <div class="card-header card-header-setting ">Total Column Position</div>
+              <div class="card-body" style="padding: 1%;">    
+                <app-button-group-toggle [OptionArray]="this.TotalColPositionArr" (OptionSelect) = "setTtlColPos($event)"></app-button-group-toggle>      
+              </div>       
+            </div>
+          
+            <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+              <div class="card-header card-header-setting " style="max-height: 1%;">Total Row Position</div>
+              <div class="card-body" style="padding: 1%;">
+                <app-button-group-toggle [OptionArray]="this.TotalRowPositionArr" (OptionSelect) = "setTtlRowPos($event)"></app-button-group-toggle>      
+              </div>
+            </div>
+          
+            <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+              <div class="card-header card-header-setting ">Y Axis Sort</div>
+              <div class="card-body" style="padding: 1%;">
+                <app-button-group-toggle [OptionArray]="this.YaxisSortArr" (OptionSelect) = "setYSort($event)"></app-button-group-toggle>      
+              </div>       
+            </div>
+          
+            <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+              <div class="card-header card-header-setting ">X Axis Sort</div>
+              <div class="card-body" style="padding: 1%;">
+                <app-button-group-toggle [OptionArray]="this.YaxisSortArr" (OptionSelect) = "setXSort($event)"></app-button-group-toggle>
+              </div>       
+            </div>
+          
+            <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+              <div class="card-header card-header-setting ">Is Percentage</div>
+                <app-button-group-toggle [OptionArray]="this.IsPercentageArr" (OptionSelect) = "setIsPercentage($event)"></app-button-group-toggle>
+              <div class="card-body" style="padding: 1%;">
+              </div>       
+            </div>  
+
+            <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+              <div class="card-header card-header-setting ">Wrap Text</div>
+                <app-button-group-toggle [OptionArray]="this.WrapTextArr" (OptionSelect) = "setWrapText($event)"></app-button-group-toggle>
+              <div class="card-body" style="padding: 1%;">
+              </div>       
+            </div>
+
+          </div>        
+        </div>
+      </tab>
+      <tab>
+        <ng-template tabHeading><i class="icon-crop"></i></ng-template> 
+        <div class="list-group list-group-accent">
+          <div class="list-group-item list-group-item-accent-primary bg-light text-center font-weight-bold text-muted text-uppercase small">Filter</div>
+          <app-filter-selection
+          [Columns] = "this.DetailDataHeaderRow"
+          [FullData] = "this.FullData"
+          (applyFilterEvent) = "setFilter($event)"
+          ></app-filter-selection>
+        </div> 
+      </tab>    
+    </tabset>
+  </app-aside>
+</div>
+
+<!-- #loading_modal -->
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header">
+    <p style="font-size: large;font-weight: bold;margin: 0;" id="modal-basic-title">Detail: {{this.ModalFilter}} - Total Row Number: {{this.DetailDataRow.length}}</p>   
+  </div>
+  <div class="modal-body">   
+    <table>
+      <!-- header -->
+      <tr>
+         <th class ="td-aging" *ngFor = "let header of this.DetailDataHeaderRow">{{header}}</th> 
+      </tr>
+      <!-- data row -->
+      <tr *ngFor ="let row of this.DetailDataRow">
+        <td class ="td-aging" *ngFor = "let cell of row">{{cell}}</td>
+      </tr>   
+    </table>
+  </div>
+  <div class="modal-footer">
+    <!-- <button type="button" class="btn btn-outline-primary btn-sm" >Open In New Tab</button> -->
+    <button type="button" class="btn btn-outline-dark btn-sm" (click)="exportToCSV()">Download</button>
+    <button type="button" class="btn btn-outline-warning btn-sm" (click) ="c('close')">Close</button>
+  </div>
+</ng-template>

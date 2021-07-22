@@ -1,0 +1,6 @@
+<div class="btn-group btn-group-toggle float-right mr-3" data-toggle="buttons" style="width: 80%;">
+  <label class="btn btn-outline-primary"
+  *ngFor="let Option of OptionArray;let i = index" 
+  [class.active]="selectedIndex === i"   
+  (click)="selectOption(i)">{{Option}}</label>
+</div>

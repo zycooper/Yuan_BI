@@ -1,0 +1,34 @@
+<div class="col-md-12">
+  <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+    <div class="card-body" style="padding: 1%;">
+      <button class="btn btn-primary btn-sm btn-block" (click) = "applyColumns()" [disabled] = "this.X_axis_cols && this.X_axis_cols.length > 1">Apply</button>
+    </div>       
+  </div>
+
+  <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+    <div class="card-header" style="padding: 2%; text-align: center;">X-axis</div>    
+    <div class="card-body" style="padding: 1%;">
+      <div dragula="columns" style="min-height: 1rem;" [(dragulaModel)] = "X_axis_cols">
+        <div class="btn-small btn-outline-primary" *ngFor="let col of X_axis_cols" style="text-align: center;">{{col}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+    <div class="card-header" style="padding: 2%; text-align: center;">Y-axis</div>
+    <div class="card-body" style="padding: 1%;">
+      <div dragula="columns" style="min-height: 1rem;" [(dragulaModel)] = "Y_axis_cols">
+        <div class="btn-small btn-outline-primary" *ngFor="let col of Y_axis_cols" style="text-align: center;">{{col}}</div>
+      </div>
+    </div>
+  </div> 
+
+  <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+    <div class="card-header" style="padding: 2%; text-align: center;">Columns</div>
+    <div class="card-body" style="padding: 1%;">
+      <div dragula="columns" style="min-height: 1rem;" [(dragulaModel)] ="columns">
+          <div class="btn-small btn-outline-primary" *ngFor="let col of columns" style="text-align: center;">{{col}}</div>
+      </div>
+    </div>
+  </div>
+</div>

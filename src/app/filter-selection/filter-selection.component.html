@@ -1,0 +1,147 @@
+<div class="col-md-12">
+
+  <!-- Apply Button -->
+  <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+    <div class="card-body" style="padding: 1%;">
+      <button class="btn btn-primary btn-sm btn-block" (click) = "applyFilter()">Apply Filter</button>
+    </div> 
+
+    <div class="card-body" style="padding: 1%;">
+      <button class="btn btn-primary btn-sm btn-block" (click) = "clearFilter()">Clear Filter</button>
+    </div>
+  </div>
+  
+  <!-- Equal Filter -->
+  <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+    <div class="card-header" style="padding: 2%; text-align: center;">
+      <div class="row">
+        <div class="col-sm" style="text-align: right;">Filter: Equal</div>
+        <div class="col-sm" style="text-align: left;">
+          <input type="checkbox" class="form-check-input" (change)="checkCheckBoxvalue($event,'equal')">
+          <label class="form-check-label" for="exampleCheck1">Not</label>
+        </div>
+      </div>
+    </div>    
+    <div class="card-body" style="padding: 1%;">
+
+      <div class = "row"><div class = "col">
+        <div class="btn-group btn-block" dropdown>
+          <button dropdownToggle type="button" id="btn_pivot_func_col" class="btn btn-outline-primary dropdown-toggle btn-sm">
+            {{(this.ColForEqual)?this.ColForEqual:'Select Column'}}
+            <span class="caret"></span>
+          </button>
+            <ul *dropdownMenu class="dropdown-menu" role="menu">
+              <li role="menuitem">
+                <a class="dropdown-item" *ngFor="let col of this.Columns" (click) = "setEqualCol(col,true)">{{col}}</a>
+              </li>
+            </ul>
+        </div>
+      </div></div>
+
+      <div class = "row">             
+        <div class="col">
+          <input placeholder="Search Value" class="form-control">
+        </div>
+      </div>
+
+      <div class = "row"><div class = "col">
+        <select [(ngModel)]="multiSelect" size="5" multiple="" class="form-control">
+          <option value="{{value}}" *ngFor="let value of this.ColValueForEqual">{{value}}</option>
+        </select>
+      </div></div>
+
+      <div class = "row"><div class = "col">
+        <button class="btn btn-secondary btn-sm btn-block" (click) ="addToFilter(this.ColForEqual,this.multiSelect,'equal')">Add/Update Eaqual</button>
+      </div></div>
+
+    </div>
+  </div>
+
+  <!-- Like Filter -->
+  <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+    <div class="card-header" style="padding: 2%; text-align: center;">
+      <div class="row">
+        <div class="col-sm" style="text-align: right">Filter: Like</div>
+        <div class="col-sm" style="text-align: left;">
+          <input type="checkbox" class="form-check-input" (change)="checkCheckBoxvalue($event,'like')">
+          <label class="form-check-label" for="exampleCheck1">Not</label>
+        </div>
+      </div>
+    </div>
+    <div class="card-body" style="padding: 1%;">
+
+      <div class = "row"><div class = "col">
+        <div class="btn-group btn-block" dropdown>
+          <button dropdownToggle type="button" id="btn_pivot_func_col" class="btn btn-outline-primary dropdown-toggle btn-sm">
+            {{(this.ColForLike)?this.ColForLike:'Select Column'}}
+            <span class="caret"></span></button>
+          <ul *dropdownMenu class="dropdown-menu" role="menu">
+            <li role="menuitem">
+              <a class="dropdown-item" #{{col}} *ngFor="let col of this.Columns"  (click) = "setEqualCol(col)">{{col}}</a>
+            </li>
+          </ul>
+        </div>
+      </div></div>
+
+      <div class = "row">             
+          <div class="col">
+            <input #filterLikeValue placeholder="Col Value" class="form-control">
+          </div>
+      </div>
+
+      <div class = "row"><div class = "col">
+        <button class="btn btn-secondary btn-sm btn-block" (click) ="addToFilter(this.ColForLike,filterLikeValue.value,'like')">Add/Update Like</button>
+      </div></div>
+
+    </div>
+  </div>
+  
+  <!-- Filter Modify : IN -->
+  <div class = "card border-primary" style="margin-top: 3%; margin-bottom: 3%;">
+    <div class="card-header" style="padding: 2%; text-align: center;">
+      <div class="col-sm">Current Filter</div>
+    </div>
+    <div class="card-body" style="padding: 1%;">
+  
+    <div class = "card border-secondary filter-card">
+      <div class="card-header">
+        <div class="col-sm">Equal</div>
+      </div>
+      <div class="card-body">
+        <div>Some content</div>
+      </div>
+    </div>
+
+    <div class = "card border-secondary filter-card">
+      <div class="card-header">
+        <div class="col-sm">Not Equal</div>
+      </div>
+      <div class="card-body">
+        <div>Some content</div>
+      </div>
+    </div>
+
+    <div class = "card border-secondary filter-card">
+      <div class="card-header">
+        <div class="col-sm">Contain</div>
+      </div>
+      <div class="card-body">
+        <div>Some content</div>
+      </div>
+    </div>
+
+    <div class = "card border-secondary filter-card">
+      <div class="card-header">
+        <div class="col-sm">Not Contain</div>
+      </div>
+      <div class="card-body">
+        <div>Some content</div>
+      </div>
+    </div>
+
+    </div>
+
+
+</div>
+
+</div>
