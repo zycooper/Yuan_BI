@@ -24,10 +24,33 @@
         <div class="col-lg-12">
           <div class="card" style="width: fit-content; min-width: -webkit-fill-available;">
             <div class="card-header">
-              <i class="fa fa-align-justify"></i> {{this.SelectedReport}}
+              <i class="fa fa-align-justify"></i> {{this.SelectedReport == null? 'The report name will show up here after report selecting':this.SelectedReport}}
             </div>
             <div class="card-body">
-              <h1 [hidden] = "this.SelectedReport != null"><i class="fa fa-arrow-left fa-lg mt-4" style="margin-right: 1%;"></i> Please select report from the left nav bar</h1>          
+
+              <div class="card-deck" [hidden] = "this.SelectedReport != null">
+                <div class="card border-dark ">
+                  <img class="card-img-top" src="assets/img/brand/report_select_sample.png" alt="Card image cap">
+                  <div class="card-body">
+                    <h3 class="card-title"><i class="fa fa-arrow-left fa-lg mt-4" style="margin-right: 1%;"></i> Step 1.Select Different Report</h3>
+                    <p class="card-text">Please select report from the left nav bar.</p>                    
+                  </div>
+                </div>
+                <div class="card border-dark ">
+                  <img class="card-img-top" src="assets/img/brand/report_setting_sample.png" alt="Card image cap">
+                  <div class="card-body">
+                    <h3 class="card-title"><i class="fa fa-arrow-right fa-lg mt-4" style="margin-right: 1%;"></i>Step 2.Multiple Report Setting</h3>
+                    <p class="card-text">After select report, you can switch x-axis and y-axis columns, total row and total col position, text wrap and filter functions on the right side-bar.</p>                    
+                  </div>
+                </div>
+                <div class="card border-dark ">
+                  <img class="card-img-top" src="assets/img/brand/more_info.png" alt="Card image cap">
+                  <div class="card-body">
+                    <h3 class="card-title"><i class="fa fa-arrow-up fa-lg mt-4" style="margin-right: 1%;"></i>More Info</h3>
+                    <p class="card-text">If you want to check the source code or more info about this demo, please click the two icons above on the head nav bar.</p>                    
+                  </div>
+                </div>
+              </div>                           
               <table class="table table-striped table-sm">     
                 <tr *ngFor = "let row of this.PivotData; let i = index">
                   <td class ="td-aging" 
@@ -47,7 +70,20 @@
     
     </div>
   </main>
-  <app-aside [fixed]="true" [display]="false">
+  <app-aside [fixed]="true" [display]="false">    
+    <div class="card bg-light mb-3" style="max-width: 18rem;margin: 5%;"  [hidden] = "this.SelectedReport != null">
+      <div class="card-header">Report Not Select Yet</div>
+      <div class="card-body">
+        <h5 class="card-title">
+        <i class="fa fa-arrow-left fa-lg" style="margin-right: 1%;"></i>
+        <i class="fa fa-arrow-left fa-lg" style="margin-right: 1%;"></i>
+        <i class="fa fa-arrow-left fa-lg" style="margin-right: 1%;"></i>
+        <i class="fa fa-arrow-left fa-lg" style="margin-right: 1%;"></i>
+        <i class="fa fa-arrow-left fa-lg" style="margin-right: 1%;"></i>     
+      </h5>
+        <p class="card-text">Please select report from the left nav bar first!</p>
+      </div>
+    </div>
     <tabset [ngStyle]="{'display':(this.FullData && this.FullData.length > 0) ? '' : 'none' }">
       <tab>
         <ng-template tabHeading><i class="icon-list"></i></ng-template>
